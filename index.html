@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Car Challenge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        <h1 class="title">Train Car Challenge!</h1>
+        <div id="status-message">
+            <div id="line1" class="status-line"></div>
+            <div id="line2" class="status-line"></div>
+            <div id="line3" class="status-line"></div>
+        </div>
+        <div id="track-container">
+          <div id="train-car">
+            <div id="passengers-container"></div>
+          </div>
+
+          <div id="wheels-row">
+            <div class="wheel"></div>
+            <div class="wheel"></div>
+            <div class="wheel"></div>
+            <div class="wheel"></div>
+          </div>
+        </div>
+
+
+
+
+       <div id="removed-container">
+           <h2>Removed Friends: <span id="removed-count">0</span></h2>
+           <div id="removed-friends-list">
+               </div>
+       </div>
+
+        <button id="next-level-btn" onclick="startGame()" style="display:none;">Next Challenge!</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f8ff; /* Light blue sky */
+    flex-direction: column;
+}
+
+#game-container {
+    width: 700px;             /* fixed width */
+    max-width: 90%;           /* responsive fallback */
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* Title */
+.title {
+    color: #4CAF50;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Status text – 3 centered lines */
+#status-message {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.status-line {
+    font-size: 1.3em;
+    margin: 6px 0;
+}
+
+.status-line:nth-child(1) {
+    font-weight: bold;
+}
+
+.status-line:nth-child(2) {
+    font-weight: bold;
+    color: #d9534f; /* highlight capacity line */
+}
+
+.status-line:nth-child(3) {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+/* Track + car */
+#track-container {
+    display: flex;
+    flex-direction: column;   /* STACK vertically */
+    align-items: center;      /* center train + wheels */
+    padding-bottom: 20px;
+    border-bottom: 4px solid #333;
+}
+
+
+#train-car {
+    background: #a0522d;
+    border: 5px solid #6b4423;
+    border-radius: 15px;
+    padding: 15px 20px;
+    width: 100%;             /* car becomes stable width */
+    min-height: 100px;
+    box-sizing: border-box;
+}
+
+/* Passengers inside car */
+#passengers-container {
+    display: flex;
+    flex-wrap: wrap;          /* allows wrapping to next line */
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
+    max-width: 100%;          /* stays inside train width */
+}
+
+.passenger {
+    cursor: pointer;
+    font-size: 2.5em;         /* Large emoji size */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    user-select: none;
+    padding: 5px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.passenger:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Removed friends section – fully centered */
+#removed-container {
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 3px dashed #ccc;
+    text-align: center;       /* center header + content */
+}
+
+#removed-container h2 {
+    margin: 0;
+    text-align: center;
+}
+
+#removed-friends-list {
+    display: flex;
+    justify-content: center;  /* center emoji row */
+    flex-wrap: wrap;          /* allow multiple lines */
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.removed-friend-emoji {
+    font-size: 2.5em; 
+    opacity: 0.7;             /* slightly dimmer */
+    transition: opacity 0.5s;
+}
+
+/* Next-level button */
+#next-level-btn {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+#next-level-btn:hover {
+    background-color: #45a049;
+}
+
+/* Wheels under the train car */
+#wheels-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;                /* space between wheels */
+    margin-top: -10px;        /* pull wheels closer to car */
+}
+
+.wheel {
+    width: 40px;
+    height: 40px;
+    background: #333;
+    border: 6px solid #666;
+    border-radius: 50%;
+    box-shadow: inset -4px -4px 0 rgba(0,0,0,0.4);
+}
+
