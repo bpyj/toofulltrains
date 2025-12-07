@@ -1,11 +1,11 @@
 // ---------------- CONFIG ----------------
 
-// (Start, Target)
+// Each level only needs start and target now
 const LEVELS = [
-  { start: 5, target: 3, message: "Take away 2 friends." },
-  { start: 6, target: 4, message: "We can only carry 4!" },
-  { start: 7, target: 5, message: "Too full! Let's only keep 5." },
-  { start: 4, target: 2, message: "Only 2 passengers today." }
+  { start: 5, target: 3 },
+  { start: 6, target: 4 },
+  { start: 7, target: 5 },
+  { start: 4, target: 2 }
 ];
 
 const ANIMAL_EMOJIS = ["🐶", "🐻", "🐰", "🦊", "🐷", "🐸", "🐨", "🐼"];
@@ -24,9 +24,17 @@ const statusMessage = document.getElementById("status-message");
 const removedCountDisplay = document.getElementById("removed-count");
 const removedFriendsList = document.getElementById("removed-friends-list");
 const nextLevelButton = document.getElementById("next-level-btn");
+const trackContainer = document.getElementById("track-container");
+const restartButton = document.getElementById("restart-btn");
 
-// If you added the optional 3-line status layout:
-// Helpers to see if we have multi-line layout
+// New:
+const trainCarEl = document.getElementById("train-car");
+const wheelsRowEl = document.getElementById("wheels-row");
+
+
+
+
+// 3-line status layout
 const line1El = document.getElementById("line1");
 const line2El = document.getElementById("line2");
 const line3El = document.getElementById("line3");
@@ -87,30 +95,99 @@ function showStopText() {
   }
 }
 
+function launchParade() {
+  if (!trackContainer) return;
+
+  // Hide the original train car + wheels, but keep them in DOM
+  if (trainCarEl) trainCarEl.style.visibility = "hidden";
+  if (wheelsRowEl) wheelsRowEl.style.visibility = "hidden";
+
+  // Remove any existing parade (defensive)
+  const oldParade = trackContainer.querySelector(".parade-train");
+  if (oldParade) oldParade.remove();
+
+  // Build parade train wrapper
+  const train = document.createElement("div");
+  train.className = "parade-train";
+
+  // Fewer cars if small screen
+  const isMobile = window.innerWidth <= 480;
+  const numCars = isMobile ? 3 : 5;
+  const passengersPerCar = 3;
+  let emojiIndex = 0;
+
+  for (let c = 0; c < numCars; c++) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "parade-car-wrapper";
+
+    // --- CAR BODY ---
+    const car = document.createElement("div");
+    car.className = "parade-car";
+
+    const row = document.createElement("div");
+    row.className = "parade-passengers";
+
+    for (let p = 0; p < passengersPerCar; p++) {
+      const span = document.createElement("span");
+      span.textContent = ANIMAL_EMOJIS[emojiIndex % ANIMAL_EMOJIS.length];
+      emojiIndex++;
+      row.appendChild(span);
+    }
+
+    car.appendChild(row);
+
+    // --- WHEELS BELOW CAR ---
+    const wheelsRow = document.createElement("div");
+    wheelsRow.className = "parade-wheels";
+
+    for (let w = 0; w < 2; w++) {
+      const wheel = document.createElement("div");
+      wheel.className = "parade-wheel";
+      wheelsRow.appendChild(wheel);
+    }
+
+    wrapper.appendChild(car);
+    wrapper.appendChild(wheelsRow);
+
+    train.appendChild(wrapper);
+  }
+
+  trackContainer.appendChild(train);
+}
+
+
+
 // When all levels are done
 function showAllDone() {
   if (hasLines()) {
     line1El.textContent = "🎉 All done!";
-    line2El.textContent = "You finished all the train challenges.";
-    line3El.textContent = "Great job, little conductor!";
+    line2El.textContent = "All cars hooked up and ready to go!";
+    line3El.textContent = "Great job, conductor!";
   } else {
     statusMessage.textContent =
-      "🎉 You finished all the challenges! Great job, conductor!";
+      "🎉 All cars hooked up and ready to go! Great job, conductor!";
   }
   passengersContainer.innerHTML = "";
   removedCountDisplay.textContent = "0";
   removedFriendsList.innerHTML = "";
   nextLevelButton.style.display = "none";
+
+  // 🚂 Launch the final reward animation
+  launchParade();
+  restartButton.style.display = "block";   // 👈 show restart button
+
 }
+
+
 
 // ---------------- GAME LOGIC ----------------
 
 function startGame() {
-  // If we've finished all levels, you can either stop…
+  // If we've finished all levels, stop or loop
   if (currentLevelIndex >= LEVELS.length) {
     showAllDone();
     return;
-    // Or loop back to start by uncommenting the next line:
+    // Or loop back to start:
     // currentLevelIndex = 0;
   }
 
@@ -169,7 +246,7 @@ function handlePassengerClick(passengerEl) {
       currentLevelIndex++;
       setTimeout(() => {
         nextLevelButton.style.display = "block";
-      }, 1500);
+      }, 500);
     } else {
       showProgressText();
     }
@@ -181,4 +258,28 @@ function handlePassengerClick(passengerEl) {
 
 // ---------------- INIT ----------------
 
+restartButton.addEventListener("click", () => {
+  // Reset level index
+  currentLevelIndex = 0;
+
+  // Remove parade if present
+  const parade = trackContainer.querySelector(".parade-train");
+  if (parade) parade.remove();
+
+  // Show original train car + wheels again
+  if (trainCarEl) trainCarEl.style.visibility = "visible";
+  if (wheelsRowEl) wheelsRowEl.style.visibility = "visible";
+
+  // Hide restart button + clear status
+  restartButton.style.display = "none";
+  nextLevelButton.style.display = "none";
+
+  // Start from first level again
+  startGame();
+});
+
+
+
 window.onload = startGame;
+
+
